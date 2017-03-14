@@ -39,7 +39,7 @@ Alarm.prototype.getBusTime = function(stopId, routeNum, getEstTime) {
     var route = _.findKey(response.resultSet.arrival, {"route":parseInt(routeNum)});
     // console.log(route);
     var estimatedTime = moment(response.resultSet.arrival[route].estimated).fromNow();
-    console.log("estimated" + estimatedTime);
+    console.log("estimated " + estimatedTime);
     getEstTime(estimatedTime);
     // return estimatedTime;
 

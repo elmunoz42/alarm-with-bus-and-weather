@@ -10,12 +10,11 @@ var getEstTime = function(estTime){
 };
 
 $(document).ready(function(){
-
   setInterval(function(){
     $("#current").text(moment().format("h:mm:ss a"));
   },1000);
 
-  var alarmFunction = function(alarmTime, city, stopId, routeNum) {
+  var alarmFunction = function(alarmTime, city, stopId, routeNum, deg) {
     // [2017,2,14,9,48,0]
     var estTime = "";
     setInterval(function(){
@@ -29,11 +28,11 @@ $(document).ready(function(){
           // console.log(estTime);
 
           currentWeatherObject.getHumidity(city, displayHumidity);
-          currentWeatherObject.getTemperature(city, displayTemperature);
+          currentWeatherObject.getTemperature(deg, city, displayTemperature);
         }
         else if(snoozeCount%90===0){
           estTime = currentAlarmObject.getBusTime(stopId, routeNum);
-          $('#time').text("Why aren't you up yet. You missed your bus. The next one comes " + estTime + "  <br>");
+          $('#time').text("Why aren't you up yet. <br>");
         }
         snoozeCount++;
         // console.log(snoozeCount);
@@ -52,10 +51,12 @@ $(document).ready(function(){
     var splitTime = alarmTime.split(":");
     var finalTime = moment().hour(splitTime[0]).minute(splitTime[1]).second(0);
     var routeNumber = $("#route").val();
-    console.log(routeNumber);
-    console.log(finalTime._d);
+    var deg = $("input[name='deg']:checked").val();
+    // currentWeatherObject.getTemperature(deg, city, displayTemperature);
+    // console.log(deg);
+    // console.log(finalTime._d);
     // currentAlarmObject.getBusTime(busStopId, alarmFunction, finalTime, city, routeNum);
-    alarmFunction(finalTime, city, busStopId, routeNumber);
+    alarmFunction(finalTime, city, busStopId, routeNumber, deg);
   });
 
   // var city = $('#location').val();
@@ -63,8 +64,8 @@ $(document).ready(function(){
     $('#time').append("The humidity in " + city + " is " + humidityData + "%");
   };
 
-  var displayTemperature = function(city, temperatureData) {
-    $('#time').append(" and the temperature is " + temperatureData + "&#8451;<br>");
+  var displayTemperature = function(deg, city, temperatureData) {
+    $('#time').append(" and the temperature is " + temperatureData + "&deg;" + deg + " <br>");
   };
 
 });
