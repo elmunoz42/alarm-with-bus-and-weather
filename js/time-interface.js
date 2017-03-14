@@ -4,31 +4,36 @@ var snoozeCount = 0;
 var currentWeatherObject = new Weather();
 var currentAlarmObject = new Alarm();
 var city = "Portland, OR";
-var estimatedTime = "";
 
+var getEstTime = function(estTime){
+  $('#time').append("Wake up! The bus is coming in " + estTime + " minutes <br>");
+};
 
 $(document).ready(function(){
 
   setInterval(function(){
     $("#current").text(moment().format("h:mm:ss a"));
   },1000);
-  // var test = moment().add(7, "h").add(20, "m")._d
-  // console.log(moment(test).isBefore(moment()));
-  // console.log(moment([2017,2,14,9,48,0])._d);
-  var alarmFunction = function(estTime, alarmTime, city) {
+
+  var alarmFunction = function(alarmTime, city, stopId, routeNum) {
     // [2017,2,14,9,48,0]
+    var estTime = "";
     setInterval(function(){
       var alarm = moment().to(moment(alarmTime));
+      // console.log(alarm);
       if(moment(alarmTime).isBefore(moment())){
         if(snoozeCount===0){
           alert("Wake up!");
           $('#time').empty();
-          $('#time').append("Wake up! The bus is coming in " + estTime + " minutes <br>");
+          currentAlarmObject.getBusTime(stopId, routeNum, getEstTime);
+          // console.log(estTime);
+
           currentWeatherObject.getHumidity(city, displayHumidity);
           currentWeatherObject.getTemperature(city, displayTemperature);
         }
         else if(snoozeCount%90===0){
-          $('#time').text("Why aren't you up yet. You missed your bus. The next one comes in " + estTime + " minutes <br>");
+          estTime = currentAlarmObject.getBusTime(stopId, routeNum);
+          $('#time').text("Why aren't you up yet. You missed your bus. The next one comes " + estTime + "  <br>");
         }
         snoozeCount++;
         // console.log(snoozeCount);
@@ -39,19 +44,18 @@ $(document).ready(function(){
   };
 
 
-
   $("#alarm-setup").submit(function(){
     event.preventDefault();
     var alarmTime = $("#alarm-time").val();
     var city = $("#city").val();
     var busStopId = $("#bus-stop").val();
     var splitTime = alarmTime.split(":");
-    var finalTime = moment().hour(splitTime[0]).minute(splitTime[1]);
-    var routeNum = $("#route").val();
-    console.log(routeNum);
-    // console.log(finalTime._d);
-    currentAlarmObject.getBusTime(busStopId, alarmFunction, finalTime, city, routeNum);
-
+    var finalTime = moment().hour(splitTime[0]).minute(splitTime[1]).second(0);
+    var routeNumber = $("#route").val();
+    console.log(routeNumber);
+    console.log(finalTime._d);
+    // currentAlarmObject.getBusTime(busStopId, alarmFunction, finalTime, city, routeNum);
+    alarmFunction(finalTime, city, busStopId, routeNumber);
   });
 
   // var city = $('#location').val();
