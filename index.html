@@ -10,7 +10,7 @@
   <body>
     <div class="container">
       <div class="jumbotron">
-
+        <h3 id="current"></h3>
         <h3>Well look at the time! </h3>
         <h3 id="time"></h3>
       </div>
@@ -23,8 +23,14 @@
           <input type="time" id="alarm-time" placeholder="06:30:00 am"><br>
           <label for="city">city</label><br>
           <input type="text" id="city" placeholder="Portland, OR"><br>
+          <input type="radio" name="F" value="F">
+          <label for="F">F&deg;</label>
+          <input type="radio" name="C" value="C" checked>
+          <label for="C">C&deg;</label><br>
           <label for="bus-stop">bus stop id</label><br>
           <input type="number" id="bus-stop" placeholder="780"><br>
+          <label for="route">bus route</label><br>
+          <input type="number" id="route" placeholder="20"><br>
           <button type="submit">Submit</button>
         </form>
       </div>

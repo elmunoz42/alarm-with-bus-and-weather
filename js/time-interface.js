@@ -9,7 +9,9 @@ var estimatedTime = "";
 
 $(document).ready(function(){
 
-
+  setInterval(function(){
+    $("#current").text(moment().format("h:mm:ss a"));
+  },1000);
   // var test = moment().add(7, "h").add(20, "m")._d
   // console.log(moment(test).isBefore(moment()));
   // console.log(moment([2017,2,14,9,48,0])._d);
@@ -45,8 +47,10 @@ $(document).ready(function(){
     var busStopId = $("#bus-stop").val();
     var splitTime = alarmTime.split(":");
     var finalTime = moment().hour(splitTime[0]).minute(splitTime[1]);
-    console.log(finalTime._d);
-    currentAlarmObject.getBusTime(busStopId, alarmFunction, finalTime, city);
+    var routeNum = $("#route").val();
+    console.log(routeNum);
+    // console.log(finalTime._d);
+    currentAlarmObject.getBusTime(busStopId, alarmFunction, finalTime, city, routeNum);
 
   });
 
